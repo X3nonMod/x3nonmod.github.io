@@ -310,7 +310,10 @@ function showPage(path, force) {
     }
 
     $(toHide).filter(":visible").hide();
+    if (!showEditor && editorShown) $(document.getElementById(editorId)).css({top: "-9999px"});
+    $("body > main, body > main > article").has($toShow).show();
     setBodyClass(path);
+    $toShow.show();
 
     if (showEditor) $toShow.css({top: 0});
     
