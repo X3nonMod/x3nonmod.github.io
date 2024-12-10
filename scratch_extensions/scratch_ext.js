@@ -27,7 +27,7 @@ window.V2 = new (function () {
     lib.register = function (descriptor, handler, deviceSpec) {
         var name = descriptor.name;
         if (name in handlers) {
-            console.log('X3non extension "' + name + '" already exists!');
+            console.log('Scratch extension "' + name + '" already exists!');
             return false;
         }
 
@@ -614,7 +614,6 @@ window.V2 = new (function () {
     }
     Devices = {ble: BleDevice, wedo2: WeDo2Device};
 })();
-
 
 window.ScratchExtensions = new (function () {
     var plugin = null;
