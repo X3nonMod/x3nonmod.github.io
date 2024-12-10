@@ -24,9 +24,8 @@ window.V2 = new (function () {
             );
     };
 
-    lib.register = function (descriptor, deviceSpec) {
+    lib.register = function (descriptor, handler, deviceSpec) {
         var name = descriptor.name;
-        var handler = descriptor.ext;
         if (name in handlers) {
             console.log('X3non extension "' + name + '" already exists!');
             return false;
