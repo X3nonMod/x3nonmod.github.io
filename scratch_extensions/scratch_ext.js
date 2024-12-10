@@ -66,6 +66,10 @@ window.ScratchExtensions = new (function () {
         return true;
     };
 
+    lib.x3non = function () {
+        return true;
+    };
+
     var loadingURL;
     lib.loadExternalJS = function (url) {
         var scr = document.createElement("script");
