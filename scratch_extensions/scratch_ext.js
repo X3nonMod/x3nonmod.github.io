@@ -38,7 +38,7 @@ window.V2 = new (function () {
 
         // Show the blocks in Scratch!
         var extObj = {
-            extensionName: descriptor.name,
+            extensionName: name,
             blockSpecs: descriptor.blocks,
             url: descriptor.url,
             menus: descriptor.menus,
