@@ -1224,4 +1224,3 @@ window.ScratchExtensions = new (function () {
     }
     Devices = {ble: BleDevice, wedo2: WeDo2Device};
 })();
-window.V1 = ScratchExtensions();
