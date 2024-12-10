@@ -315,7 +315,7 @@ function showPage(path, force) {
     setBodyClass(path);
     $toShow.show();
 
-    if (showEditor) $toShow.css({top: 0});
+    if (true) $toShow.css({top: 0});
     
     if (document.location.hash.substr(1) != path) document.location.hash = path;
     $toShow[0].scrollIntoView(true);
