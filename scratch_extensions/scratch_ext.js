@@ -4,7 +4,7 @@
 //
 // Scratch 2.0 extension manager which Scratch communicates with to initialize extensions and communicate with them.
 // The extension manager also handles creating the browser plugin to enable access to HID and serial devices.
-window.X3non = new (function () {
+window.V2 = new (function () {
     var plugin = null;
     var handlers = {};
     var blockDefs = {};
@@ -13,7 +13,6 @@ window.X3non = new (function () {
     var devices = {};
     var poller = null;
     var lib = this;
-    lib.extensions = {};
 
     var isOffline = Scratch && Scratch.FlashApp && Scratch.FlashApp.ASobj &&
         Scratch.FlashApp.ASobj.isOffline && Scratch.FlashApp.ASobj.isOffline();
@@ -25,9 +24,10 @@ window.X3non = new (function () {
             );
     };
 
-    lib.extensions.register = function (name, descriptor, handler, deviceSpec) {
+    lib.register = function (descriptor, handler, deviceSpec) {
+        var name = descriptor.name;
         if (name in handlers) {
-            console.log('Scratch extension "' + name + '" already exists!');
+            console.log('X3non extension "' + name + '" already exists!');
             return false;
         }
 
@@ -38,7 +38,7 @@ window.X3non = new (function () {
 
         // Show the blocks in Scratch!
         var extObj = {
-            extensionName: name,
+            extensionName: descriptor.name,
             blockSpecs: descriptor.blocks,
             url: descriptor.url,
             menus: descriptor.menus,
@@ -68,14 +68,14 @@ window.X3non = new (function () {
     };
 
     var loadingURL;
-    lib.extensions.loadExternalJS = function (url) {
+    lib.loadExternalJS = function (url) {
         var scr = document.createElement("script");
         scr.src = url;// + "?ts=" + new Date().getTime();
         loadingURL = url;
         document.getElementsByTagName("head")[0].appendChild(scr);
     };
 
-    lib.extensions.loadLocalJS = function (code) {
+    lib.loadLocalJS = function (code) {
         // Run the extension code in the global scope
         try {
             (new Function(code))();
@@ -84,7 +84,7 @@ window.X3non = new (function () {
         }
     };
 
-    lib.extensions.unregister = function (name) {
+    lib.unregister = function (name) {
         try {
             handlers[name]._shutdown();
         } catch (e) {
@@ -95,15 +95,15 @@ window.X3non = new (function () {
         delete deviceSpecs[name];
     };
 
-    lib.extensions.canAccessDevices = function () {
+    lib.canAccessDevices = function () {
         return pluginAvailable();
     };
 
-    lib.extensions.getReporter = function (ext_name, reporter, args) {
+    lib.getReporter = function (ext_name, reporter, args) {
         return handlers[ext_name][reporter].apply(handlers[ext_name], args);
     };
 
-    lib.extensions.getReporterAsync = function (ext_name, reporter, args, job_id) {
+    lib.getReporterAsync = function (ext_name, reporter, args, job_id) {
         var callback = function (retval) {
             Scratch.FlashApp.ASobj.ASextensionReporterDone(ext_name, job_id, retval);
         };
@@ -116,16 +116,16 @@ window.X3non = new (function () {
         }
     };
 
-    lib.extensions.getReporterForceAsync = function (ext_name, reporter, args, job_id) {
+    lib.getReporterForceAsync = function (ext_name, reporter, args, job_id) {
         var retval = handlers[ext_name][reporter].apply(handlers[ext_name], args);
         Scratch.FlashApp.ASobj.ASextensionReporterDone(ext_name, job_id, retval);
     };
 
-    lib.extensions.runCommand = function (ext_name, command, args) {
+    lib.runCommand = function (ext_name, command, args) {
         handlers[ext_name][command].apply(handlers[ext_name], args);
     };
 
-    lib.extensions.runAsync = function (ext_name, command, args, job_id) {
+    lib.runAsync = function (ext_name, command, args, job_id) {
         var callback = function () {
             Scratch.FlashApp.ASobj.ASextensionCallDone(ext_name, job_id);
         };
@@ -133,7 +133,7 @@ window.X3non = new (function () {
         handlers[ext_name][command].apply(handlers[ext_name], args);
     };
 
-    lib.extensions.getStatus = function (ext_name) {
+    lib.getStatus = function (ext_name) {
         if (!(ext_name in handlers)) {
             return {status: 0, msg: 'Not loaded'};
         }
@@ -157,7 +157,7 @@ window.X3non = new (function () {
         return handlers[ext_name]._getStatus();
     };
 
-    lib.extensions.stop = function (ext_name) {
+    lib.stop = function (ext_name) {
         var ext = handlers[ext_name];
         if (ext._stop) {
             ext._stop();
@@ -167,7 +167,7 @@ window.X3non = new (function () {
         }
     };
 
-    lib.extensions.notify = function (text) {
+    lib.notify = function (text) {
         if (window.JSsetProjectBanner) {
             JSsetProjectBanner(text);
         } else {
@@ -175,7 +175,7 @@ window.X3non = new (function () {
         }
     };
 
-    lib.extensions.resetPlugin = function () {
+    lib.resetPlugin = function () {
         if (plugin && plugin.reset) plugin.reset();
         shutdown();
     };
