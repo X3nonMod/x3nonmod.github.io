@@ -24,7 +24,8 @@ window.V2 = new (function () {
             );
     };
 
-    lib.register = function (name, descriptor, handler, deviceSpec) {
+    lib.register = function (descriptor, handler, deviceSpec) {
+        var name = descriptor.names;
         if (name in handlers) {
             console.log('Scratch extension "' + name + '" already exists!');
             return false;
