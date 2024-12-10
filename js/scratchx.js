@@ -1,28 +1,13 @@
 // Simulate the bare minimum of the view that exists on the main site
 var Scratch = Scratch || {};
-Scratch.editorIsReady = false;
+Scratch.editorIsReady = true;
 Scratch.FlashApp = Scratch.FlashApp || {};
 
 var editorId = "scratch";
-var initialPage = "home";
-var ShortURL = {
-    key : "AIzaSyBlaftRUIOLFVs8nfrWvp4IBrqq9-az46A",
-    api : "https://www.googleapis.com/urlshortener/v1/url",
-    domain : "https://goo.gl"
-};
+var initialPage = "scratch";
 
 function handleEmbedStatus(e) {
-    $('#scratch-loader').hide();
-    var scratch = $(document.getElementById(editorId));
-    if (!e.success) {
-        scratch.css('marginTop', '10');
-        scratch.find('IMG.proj_thumb').css('width', '179px');
-        scratch.find('DIV.scratch_unsupported').show();
-        scratch.find('DIV.scratch_loading').hide();
-    } else {
-        Scratch.FlashApp.ASobj = scratch[0];
-        Scratch.FlashApp.$ASobj = $(Scratch.FlashApp.ASobj);
-    }
+    $('#scratch-loader').show();
 }
 
 // enables the SWF to log errors
@@ -310,11 +295,12 @@ function showPage(path, force) {
     }
 
     $(toHide).filter(":visible").hide();
+    if (!showEditor && editorShown) $(document.getElementById(editorId)).css({top: 0});
     $("body > main, body > main > article").has($toShow).show();
     setBodyClass(path);
     $toShow.show();
 
-    if (true) $toShow.css({top: 0});
+    if (showEditor) $toShow.css({top: 0});
     
     if (document.location.hash.substr(1) != path) document.location.hash = path;
     $toShow[0].scrollIntoView(true);
