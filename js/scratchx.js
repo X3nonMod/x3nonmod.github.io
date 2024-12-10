@@ -1,13 +1,28 @@
 // Simulate the bare minimum of the view that exists on the main site
 var Scratch = Scratch || {};
-Scratch.editorIsReady = true;
+Scratch.editorIsReady = false;
 Scratch.FlashApp = Scratch.FlashApp || {};
 
-var editorId = "scratch";
-var initialPage = "scratch";
+var editorId = "home";
+var initialPage = "home";
+var ShortURL = {
+    key : "AIzaSyBlaftRUIOLFVs8nfrWvp4IBrqq9-az46A",
+    api : "https://www.googleapis.com/urlshortener/v1/url",
+    domain : "https://goo.gl"
+};
 
 function handleEmbedStatus(e) {
-    $('#scratch-loader').show();
+    $('#scratch-loader').hide();
+    var scratch = $(document.getElementById(editorId));
+    if (!e.success) {
+        scratch.css('marginTop', '10');
+        scratch.find('IMG.proj_thumb').css('width', '179px');
+        scratch.find('DIV.scratch_unsupported').show();
+        scratch.find('DIV.scratch_loading').hide();
+    } else {
+        Scratch.FlashApp.ASobj = scratch[0];
+        Scratch.FlashApp.$ASobj = $(Scratch.FlashApp.ASobj);
+    }
 }
 
 // enables the SWF to log errors
@@ -295,7 +310,7 @@ function showPage(path, force) {
     }
 
     $(toHide).filter(":visible").hide();
-    if (!showEditor && editorShown) $(document.getElementById(editorId)).css({top: 0});
+    if (!showEditor && editorShown) $(document.getElementById(editorId)).css({top: "-9999px"});
     $("body > main, body > main > article").has($toShow).show();
     setBodyClass(path);
     $toShow.show();
