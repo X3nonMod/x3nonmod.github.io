@@ -4,21 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X3non</title>
-            <link rel="icon" type="image/x-icon" href="https://x3nonmod.github.io/dev/images/x3non_icon.png">
-    <script type="text/javascript" src="libs/base64ab.js" async></script>
-<script type="text/javascript" src="libs/bowser.min.js"></script>
-<script type="text/javascript" src="libs/swfobject.js"></script>
-<script type="text/javascript" src="libs/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="libs/socket.io-1.3.7.js"></script>
-<script type="text/javascript" src="libs/underscore-min.js" async></script>
-<script type="text/javascript" src="libs/ZeroClipboard.min.js" async></script>
-<script type="text/javascript" src="js/scratchx.js" defer></script>
-<script type="text/javascript" src="scratch_extensions/scratch_proxies.js" defer></script>
-<script type="text/javascript" src="scratch_extensions/scratch_plugin.js" defer></script>
-<script type="text/javascript" src="scratch_extensions/scratch_nmh.js" defer></script>
-<script type="text/javascript" src="scratch_extensions/scratch_deviceManager.js" defer></script>
-<script type="text/javascript" src="scratch_extensions/scratch_ext.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="https://x3nonmod.github.io/dev/images/x3non_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -26,11 +19,16 @@
             background-color: #121212;
             color: #e0e0e0;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         header {
-            background-color: #1f1f1f;
-            color: white;
-            padding: 10px 0;
+            background-color: #181818;
+            border-bottom: 1px solid #2a2a2a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         header nav {
             display: flex;
@@ -39,152 +37,126 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            height: 60px;
         }
         header nav .left,
         header nav .right {
             display: flex;
             align-items: center;
+            gap: 8px;
         }
-        header nav .left a,
-        header nav .right a {
-            color: white;
+        header nav a {
+            color: #b0b0b0;
             text-decoration: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: color 0.2s ease, background-color 0.2s ease;
         }
-        header nav .left a:hover,
-        header nav .right a:hover {
-            background-color: #333333;
-            border-radius: 5px;
+        header nav a:hover {
+            color: #ffffff;
+            background-color: #252525;
         }
-        header nav .right a {
+        header nav .btn-action {
             background-color: #ff5722;
-            margin-left: 10px;
-            border-radius: 5px;
+            color: white;
         }
-        header nav .right a:hover {
+        header nav .btn-action:hover {
             background-color: #e64a19;
         }
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 60px 20px;
+            flex: 1;
         }
-        .intro {
+        .hero {
             text-align: center;
-            padding: 50px 0;
+            padding: 40px 0;
         }
-        .intro h1 {
-            font-size: 2.5em;
+        .hero h1 {
+            font-size: 2.8rem;
             margin-bottom: 20px;
             color: #ffeb3b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
-        .intro p {
-            font-size: 1.2em;
-            color: #bbbbbb;
-            margin-bottom: 30px;
+        .hero p {
+            font-size: 1.2rem;
+            color: #aaaaaa;
+            max-width: 700px;
+            margin: 0 auto 35px auto;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
         .buttons a {
             display: inline-block;
-            margin: 0 10px;
-            padding: 15px 30px;
+            padding: 12px 24px;
             color: white;
             background-color: #ff5722;
-            border-radius: 5px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 1em;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
         .buttons a:hover {
             background-color: #e64a19;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+        }
+        .buttons a.secondary {
+            background-color: #252525;
+            color: #e0e0e0;
+            border: 1px solid #333;
+        }
+        .buttons a.secondary:hover {
+            background-color: #303030;
         }
         .section {
-            margin-top: 50px;
+            margin-top: 60px;
+            background-color: #181818;
+            border: 1px solid #252525;
+            border-radius: 8px;
+            padding: 30px;
         }
         .section h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
+            margin-top: 0;
+            font-size: 1.6rem;
             color: #ffeb3b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         .section p {
-            font-size: 1.1em;
-            color: #bbbbbb;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        footer {
-            background-color: #1f1f1f;
-            color: #bbbbbb;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 50px;
-        }
-        footer p {
-            margin: 10px 0;
-        }
-        footer a {
-            color: #ff5722;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-        footer a:hover {
-            text-decoration: underline;
-            color: #e64a19;
+            color: #b0b0b0;
+            margin-bottom: 0;
         }
     </style>
 </head>
 <body>
-<main>
     <header>
         <nav>
             <div class="left">
-                <a href="#home"><img src="../images/x3non_title.png" alt="X3non Logo" height="40"></a>
+                <a href="#"><img src="../images/x3non_title.png" alt="X3non Logo" height="32"></a>
                 <a href="https://x3nonmod.github.io/#scratch">Create</a>
                 <a href="https://kylekart.github.io/ScratchExtensions/#x3">Extensions</a>
-                <a href="#">Discuss</a>
-                <a href="#">Help</a>
             </div>
             <div class="right">
+                <a href="#" class="btn-action">Get Started</a>
             </div>
         </nav>
     </header>
-    <article id="editor">
-    </article>
-    <div class="container">
+
+<div class="container" style="display: none;">
         <div class="intro">
-            <h1>Unleash Your Game Development Potential with X3non</h1>
-            <p>X3non: A game engine based on ScratchX, empowering you to create advanced interactive projects and innovative digital experiences.</p>
+            <h1>X3non Engine</h1>
+            <p>An advanced ScratchX-based environment for custom extensions and interactive projects.</p>
             <div class="buttons">
                 <a href="https://x3nonmod.github.io/#scratch">Try X3non</a>
                 <a href="https://kylekart.github.io/ScratchExtensions/#x3">View Extensions</a>
             </div>
         </div>
-        <article id="home">
-            <section class="main-content section">
-                <div>
-                    <h2>Welcome to X3non</h2>
-                    <p>Unleash your creativity and explore the possibilities with X3non. Whether you're a seasoned coder or a curious beginner, X3non provides the tools and resources you need to bring your game ideas to life.</p>
-                    <p>Get started today and embark on a journey of discovery and innovation!</p>
-                </div>
-            </section>
-        </article>
     </div>
-    <footer>
-        <p>&copy; 2024 X3non. All rights reserved.</p>
-        <p>
-            <a href="#privacy">Privacy Policy</a> |
-            <a href="#terms">Terms of Service</a>
-        </p>
-    </footer>
-</main>
 </body>
 </html>
