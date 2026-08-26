@@ -686,6 +686,7 @@ picture {
   right: 0px;
   bottom: 0px;
   left: 0px;
+  background: transparent;
   opacity: 0;
   padding-top: 0.6em;
   text-align: left;
